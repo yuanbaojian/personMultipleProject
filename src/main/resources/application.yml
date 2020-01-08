@@ -1,0 +1,23 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /3DMPMSystem
+spring:
+  datasource:
+    name: test
+    url: jdbc:oracle:thin:@192.168.6.43:1521:tooling?useSSL=false&serverTimezone=GMT%2B8
+    username: mbduser
+    password: mbduser
+    type: com.alibaba.druid.pool.DruidDataSource
+  servlet:
+    multipart:
+      max-file-size:100mb
+  mail:
+    host : smtp.qq.com
+    port : 587
+    username : 1793870688@qq.com
+    password : xgnwkzstqovkeceb
+debug: true
+mybatis-plus:
+  type-aliases-package: com.atoz.capp.dao
+  mapper-locations: com.atoz.capp.mapping/*.xml

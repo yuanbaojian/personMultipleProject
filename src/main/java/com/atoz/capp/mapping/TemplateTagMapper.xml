@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atoz.capp.dao.TemplateTagMapper" >
+  <resultMap id="BaseResultMap" type="com.atoz.capp.model.TemplateTag" >
+    <id column="OID" property="oid" jdbcType="DECIMAL" />
+    <result column="TAG_NAME" property="tagName" jdbcType="VARCHAR" />
+    <result column="PARENT_TAG" property="parentTag" jdbcType="DECIMAL" />
+    <result column="TEMPLATE_ID" property="templateId" jdbcType="DECIMAL" />
+    <result column="TAG_SORT" property="tagSort" jdbcType="DECIMAL" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="DECIMAL" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="TEMPLATE_ATTR_NAME" property="templateAttrName" jdbcType="VARCHAR" />
+    <result column="TEMPLATE_ATTR_VALUE" property="templateAttrValue" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    OID, TAG_NAME, PARENT_TAG, TEMPLATE_ID, TAG_SORT, CREATED_BY, CREATE_TIME, UPDATED_BY, 
+    UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from TBL_TEMPLATE_TAG
+    where OID = #{oid,jdbcType=DECIMAL}
+  </select>
+  <select id="getAttrValueByTid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+	  tt.OID,
+	  tt.TAG_NAME,
+	  ta.ATTR_NAME as TEMPLATE_ATTR_NAME,
+	  mav.ATTR_VALUE as TEMPLATE_ATTR_VALUE
+	from TBL_TEMPLATE_TAG tt 
+	left join TBL_TEMPLATE_ATTR ta on tt.OID = ta.ATTR_TAG
+	left join TBL_MODEL_ATTR_VALUE mav on ta.OID = mav.ATTR_ID 
+	where tt.template_id = #{templateId,jdbcType=DECIMAL}
+  </select>
+   <select id="selectByTemplateId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from TBL_TEMPLATE_TAG
+    where TEMPLATE_ID = #{templateId,jdbcType=DECIMAL}
+    order by TAG_SORT
+<!--      desc -->
+  </select>
+  
+  <select id="hasChild" resultType="java.lang.Integer" parameterType="java.lang.Long" >
+    select count(*)
+    from TBL_TEMPLATE_TAG
+    where PARENT_TAG = #{parentTagId,jdbcType=DECIMAL}
+  </select>
+  
+   <select id="selectByRootTag" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from TBL_TEMPLATE_TAG
+    where PARENT_TAG is null and TEMPLATE_ID = #{templateId,jdbcType=DECIMAL}
+    order by TAG_SORT
+  </select>
+  
+  <select id="selectByParentTag" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from TBL_TEMPLATE_TAG
+    where PARENT_TAG = #{parent,jdbcType=DECIMAL} and TEMPLATE_ID = #{templateId,jdbcType=DECIMAL}
+    order by TAG_SORT
+  </select>
+  
+   <select id="getParentTagId" resultType="java.lang.Long" parameterType="java.util.HashMap" >
+    select OID 
+    from TBL_TEMPLATE_TAG
+    where TAG_NAME = (select TAG_NAME from TBL_TEMPLATE_TAG
+                      where OID = ( select PARENT_TAG from TBL_TEMPLATE_TAG
+                                    where TAG_NAME =  #{tagName,jdbcType=VARCHAR}  
+                                        and TEMPLATE_ID =  #{oldTemplateId,jdbcType=DECIMAL})
+                         and TEMPLATE_ID =  #{oldTemplateId,jdbcType=DECIMAL})
+       and TEMPLATE_ID =  #{newTemplateId,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="getMaxSort" resultType="java.lang.Integer" parameterType="java.lang.Long" >
+    select MAX(TAG_SORT)
+    from TBL_TEMPLATE_TAG
+    where PARENT_TAG = #{parentTag,jdbcType=DECIMAL}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from TBL_TEMPLATE_TAG
+    where OID = #{oid,jdbcType=DECIMAL}
+  </delete>
+  
+   <delete id="deleteByNBDId" parameterType="java.lang.Long" >
+    delete from TBL_TEMPLATE_TAG
+    where TEMPLATE_ID = #{oid,jdbcType=DECIMAL}
+  </delete>
+  
+  <insert id="insert" parameterType="com.atoz.capp.model.TemplateTag" >
+    insert into TBL_TEMPLATE_TAG (OID, TAG_NAME, PARENT_TAG, 
+      TEMPLATE_ID, TAG_SORT, CREATED_BY, 
+      CREATE_TIME, UPDATED_BY, UPDATE_TIME
+      )
+    values (#{oid,jdbcType=DECIMAL}, #{tagName,jdbcType=VARCHAR}, #{parentTag,jdbcType=DECIMAL}, 
+      #{templateId,jdbcType=DECIMAL}, #{tagSort,jdbcType=DECIMAL}, #{createdBy,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=DECIMAL}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.atoz.capp.model.TemplateTag" >
+    <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="oid">  
+   		SELECT TBL_TEMPLATE_TAG_Sequence.nextval AS OID FROM DUAL  
+    </selectKey>
+    insert into TBL_TEMPLATE_TAG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        OID,
+      </if>
+      <if test="tagName != null" >
+        TAG_NAME,
+      </if>
+      <if test="parentTag != null" >
+        PARENT_TAG,
+      </if>
+      <if test="templateId != null" >
+        TEMPLATE_ID,
+      </if>
+      <if test="tagSort != null" >
+        TAG_SORT,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        #{oid,jdbcType=DECIMAL},
+      </if>
+      <if test="tagName != null" >
+        #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentTag != null" >
+        #{parentTag,jdbcType=DECIMAL},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=DECIMAL},
+      </if>
+      <if test="tagSort != null" >
+        #{tagSort,jdbcType=DECIMAL},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atoz.capp.model.TemplateTag" >
+    update TBL_TEMPLATE_TAG
+    <set >
+      <if test="tagName != null" >
+        TAG_NAME = #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentTag != null" >
+        PARENT_TAG = #{parentTag,jdbcType=DECIMAL},
+      </if>
+      <if test="templateId != null" >
+        TEMPLATE_ID = #{templateId,jdbcType=DECIMAL},
+      </if>
+      <if test="tagSort != null" >
+        TAG_SORT = #{tagSort,jdbcType=DECIMAL},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atoz.capp.model.TemplateTag" >
+    update TBL_TEMPLATE_TAG
+    set TAG_NAME = #{tagName,jdbcType=VARCHAR},
+      PARENT_TAG = #{parentTag,jdbcType=DECIMAL},
+      TEMPLATE_ID = #{templateId,jdbcType=DECIMAL},
+      TAG_SORT = #{tagSort,jdbcType=DECIMAL},
+      CREATED_BY = #{createdBy,jdbcType=DECIMAL},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=DECIMAL},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where OID = #{oid,jdbcType=DECIMAL}
+  </update>
+
+  <select id="checkNameExisted" resultType="Integer" parameterType="java.util.HashMap" >
+  	select count(*) from TBL_TEMPLATE_TAG
+  	<where>
+  	   TEMPLATE_ID= #{templateId,jdbcType=DECIMAL}
+  	   AND TAG_NAME = #{tagName,jdbcType=VARCHAR}
+    <if test="oid != null">
+    	AND OID != #{oid,jdbcType=DECIMAL}
+    </if>
+    <if test="parentTag == null">
+    	 AND PARENT_TAG is null
+    </if>
+    <if test="parentTag != null and parentTag != ''">
+    	 AND PARENT_TAG =#{parentTag,jdbcType=DECIMAL}
+    </if>
+  	</where>
+  </select>
+
+  <select id="selectTagByParent" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from TBL_TEMPLATE_TAG
+    where PARENT_TAG = #{parentTag,jdbcType=DECIMAL}
+    order by TAG_SORT
+  </select>
+  
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atoz.capp.dao.MBDHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.atoz.capp.model.MBDHistory" >
+    <id column="OID" property="oid" jdbcType="DECIMAL" />
+    <result column="MBD_OID" property="mbdOid" jdbcType="DECIMAL" />
+    <result column="ACTION" property="action" jdbcType="VARCHAR" />
+    <result column="RELEASED_BY" property="releasedBy" jdbcType="DECIMAL" />
+    <result column="RELEASE_TIME" property="releaseTime" jdbcType="TIMESTAMP" />
+    <result column="OPINION" property="opinion" jdbcType="VARCHAR" />
+    <result column="RELEASED_BY_NAME" property="releasedByName" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    OID, MBD_OID, ACTION, RELEASED_BY, RELEASE_TIME, OPINION
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from TBL_MBD_HISTORY
+    where OID = #{oid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from TBL_MBD_HISTORY
+    where OID = #{oid,jdbcType=DECIMAL}
+  </delete>
+  
+  
+    <delete id="deleteByMBDOid" parameterType="java.lang.Long" >
+    delete from TBL_MBD_HISTORY
+    where MBD_OID = #{mbdOid,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.atoz.capp.model.MBDHistory" >
+    insert into TBL_MBD_HISTORY (OID, MBD_OID, ACTION, 
+      RELEASED_BY, RELEASE_TIME, OPINION
+      )
+    values (#{oid,jdbcType=DECIMAL}, #{mbdOid,jdbcType=DECIMAL}, #{action,jdbcType=VARCHAR}, 
+      #{releasedBy,jdbcType=DECIMAL}, #{releaseTime,jdbcType=TIMESTAMP}, #{opinion,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atoz.capp.model.MBDHistory" >
+   <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="oid">  
+   		SELECT TBL_MBD_HISTORY_Seq.nextval AS OID FROM DUAL  
+   </selectKey>
+    insert into TBL_MBD_HISTORY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        OID,
+      </if>
+      <if test="mbdOid != null" >
+        MBD_OID,
+      </if>
+      <if test="action != null" >
+        ACTION,
+      </if>
+      <if test="releasedBy != null" >
+        RELEASED_BY,
+      </if>
+      <if test="releaseTime != null" >
+        RELEASE_TIME,
+      </if>
+      <if test="opinion != null" >
+        OPINION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        #{oid,jdbcType=DECIMAL},
+      </if>
+      <if test="mbdOid != null" >
+        #{mbdOid,jdbcType=DECIMAL},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="releasedBy != null" >
+        #{releasedBy,jdbcType=DECIMAL},
+      </if>
+      <if test="releaseTime != null" >
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opinion != null" >
+        #{opinion,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atoz.capp.model.MBDHistory" >
+    update TBL_MBD_HISTORY
+    <set >
+      <if test="mbdOid != null" >
+        MBD_OID = #{mbdOid,jdbcType=DECIMAL},
+      </if>
+      <if test="action != null" >
+        ACTION = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="releasedBy != null" >
+        RELEASED_BY = #{releasedBy,jdbcType=DECIMAL},
+      </if>
+      <if test="releaseTime != null" >
+        RELEASE_TIME = #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opinion != null" >
+        OPINION = #{opinion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atoz.capp.model.MBDHistory" >
+    update TBL_MBD_HISTORY
+    set MBD_OID = #{mbdOid,jdbcType=DECIMAL},
+      ACTION = #{action,jdbcType=VARCHAR},
+      RELEASED_BY = #{releasedBy,jdbcType=DECIMAL},
+      RELEASE_TIME = #{releaseTime,jdbcType=TIMESTAMP},
+      OPINION = #{opinion,jdbcType=VARCHAR}
+    where OID = #{oid,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="getByMBDOid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    	ah.OID,
+    	ah.MBD_OID,
+    	ah.ACTION,
+    	ah.RELEASED_BY,
+    	ah.RELEASE_TIME,
+    	ah.OPINION,
+    	u.USER_FULL_NAME as RELEASED_BY_NAME
+    from TBL_MBD_HISTORY ah
+    	left join TBL_USER u on u.USER_ID = ah.RELEASED_BY
+    where ah.MBD_OID = #{mbdOid,jdbcType=DECIMAL}
+    order by ah.RELEASE_TIME desc
+  </select>
+</mapper>

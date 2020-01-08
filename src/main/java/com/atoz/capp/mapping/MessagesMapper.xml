@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atoz.capp.dao.MessagesMapper" >
+  <resultMap id="BaseResultMap" type="com.atoz.capp.model.Messages" >
+    <id column="MESSAGE_ID" property="messageId" jdbcType="DECIMAL" />
+    <result column="UNAUDIT_ID" property="unauditId" jdbcType="VARCHAR" />
+    <result column="UNAUDIT_TYPE" property="unauditType" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="ALLMESSAGES_COUNT" property="allMessagesCount" jdbcType="DECIMAL" />
+    <result column="MBDTEMPLATE_COUNT" property="mbdTemplateCount" jdbcType="DECIMAL" />
+    <result column="STANDARD_COUNT" property="standardCount" jdbcType="DECIMAL" />
+    <result column="ANNOTATION_COUNT" property="annotationCount" jdbcType="DECIMAL" />
+    <result column="FEATURE_COUNT" property="featureCount" jdbcType="DECIMAL" />
+    <result column="MATERIAL_COUNT" property="materialCount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MESSAGE_ID, UNAUDIT_ID, UNAUDIT_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from TBL_MESSAGES
+    where MESSAGE_ID = #{messageId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from TBL_MESSAGES
+    where MESSAGE_ID = #{messageId,jdbcType=DECIMAL}
+  </delete>
+  
+  
+  <delete id="deleteMessage" parameterType="com.atoz.capp.model.Messages" >
+    delete from TBL_MESSAGES
+    where UNAUDIT_ID = #{unauditId,jdbcType=VARCHAR} and UNAUDIT_TYPE = #{unauditType,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.atoz.capp.model.Messages" >
+    insert into TBL_MESSAGES (MESSAGE_ID, UNAUDIT_ID, UNAUDIT_TYPE,USER_ID
+      )
+    values (#{messageId,jdbcType=DECIMAL}, #{unauditId,jdbcType=VARCHAR}, #{unauditType,jdbcType=VARCHAR},#{userId,jdbcType=DECIMAL},
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.atoz.capp.model.Messages" >
+   <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="messageId">  
+   		SELECT TBL_MESSAGES_Sequence.nextval AS MESSAGE_ID FROM DUAL  
+   </selectKey>
+    insert into TBL_MESSAGES
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="messageId != null" >
+        MESSAGE_ID,
+      </if>
+      <if test="unauditId != null" >
+        UNAUDIT_ID,
+      </if>
+      <if test="unauditType != null" >
+        UNAUDIT_TYPE,
+      </if>
+       <if test="userId != null" >
+        USER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="messageId != null" >
+        #{messageId,jdbcType=DECIMAL},
+      </if>
+      <if test="unauditId != null" >
+        #{unauditId,jdbcType=VARCHAR},
+      </if>
+      <if test="unauditType != null" >
+        #{unauditType,jdbcType=VARCHAR},
+      </if>
+        <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.atoz.capp.model.Messages" >
+    update TBL_MESSAGES
+    <set >
+      <if test="unauditId != null" >
+        UNAUDIT_ID = #{unauditId,jdbcType=VARCHAR},
+      </if>
+      <if test="unauditType != null" >
+        UNAUDIT_TYPE = #{unauditType,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where MESSAGE_ID = #{messageId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atoz.capp.model.Messages" >
+    update TBL_MESSAGES
+    set UNAUDIT_ID = #{unauditId,jdbcType=VARCHAR},
+      UNAUDIT_TYPE = #{unauditType,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=DECIMAL}
+    where MESSAGE_ID = #{messageId,jdbcType=DECIMAL}
+  </update>
+  
+  
+    <select id="selectByUser" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 1 as MESSAGE_ID,count(case when UNAUDIT_TYPE = 'MBDTemplate' then MESSAGE_ID end) as MBDTemplateCount,
+               count(case when UNAUDIT_TYPE = 'Finished' then MESSAGE_ID end ) as FinishedProductCount,
+               count(case when UNAUDIT_TYPE = 'Standard' then MESSAGE_ID end) as StandardCount,
+               count(case when UNAUDIT_TYPE = 'Annotation' then MESSAGE_ID end) as AnnotationCount,
+               count(case when UNAUDIT_TYPE = 'Feature' then MESSAGE_ID end) as FeatureCount,
+               count(case when UNAUDIT_TYPE = 'Material' then MESSAGE_ID end) as MaterialCount,
+               count(*) as AllMessagesCount
+    from TBL_MESSAGES
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+    group by USER_ID
+
+  </select>
+  
+</mapper>

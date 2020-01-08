@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atoz.capp.dao.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.atoz.capp.model.User" >
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+        <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+        <result column="USER_FULL_NAME" property="userFullName" jdbcType="VARCHAR" />
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+        <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+        <result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="DECIMAL" />
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_BY" property="createBy" jdbcType="DECIMAL" />
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="DECIMAL" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="FAIL_COUNT" property="failCount" jdbcType="DECIMAL" />
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
+        <result column="SECURITY_LEVEL" property="securityLevel" jdbcType="DECIMAL" />
+        <result column="SECURITY_LEVEL_NAME" property="securityLevelName" jdbcType="VARCHAR" />
+        <result column="DELETED" property="deleted" jdbcType="DECIMAL" />
+        <collection property="userRoles" ofType="com.atoz.capp.model.UserRole">
+            <id column="USER_ID" property="userId" jdbcType="INTEGER" />
+            <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+            <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		USER_ID,LOGIN_NAME, USER_FULL_NAME, PASSWORD,EMAIL,
+		MOBILE_PHONE,STATUS,CREATE_TIME, CREATE_BY,
+		UPDATED_BY, UPDATE_TIME, FAIL_COUNT,LAST_LOGIN_TIME,SECURITY_LEVEL,DELETED
+    </sql>
+
+    <select id="checkUser" resultMap="BaseResultMap" parameterType="com.atoz.capp.model.User" databaseId="oracle">
+        select
+        <include refid="Base_Column_List" />
+        from TBL_USER where DELETED = 0
+        <if test="loginName != null and loginName != ''">
+            AND LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+        </if>
+        <if test="password != null and password != ''">
+            AND PASSWORD = #{password,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.Map" databaseId="mysql">
+        select
+            users.USER_ID,
+            users.LOGIN_NAME,
+            users.USER_FULL_NAME,
+            users.PASSWORD,
+            users.EMAIL,
+            users.MOBILE_PHONE,
+            users.STATUS,
+            decode(users.STATUS,'0','启用','禁用') STATUS_NAME,
+            users.CREATE_TIME,
+            users.CREATE_BY,
+            users.UPDATED_BY,
+            users.UPDATE_TIME,
+            users.FAIL_COUNT,
+            users.LAST_LOGIN_TIME,
+            users.SECURITY_LEVEL,
+            decode(users.SECURITY_LEVEL,0,'public',1,'inner',2,'normal-secret',3,'high-secret',4,'top-secret') SECURITY_LEVEL_NAME,
+            userRole.ROLE_ID,
+            roles.ROLE_NAME ROLE_NAME
+        from TBL_USER users
+        left join TBL_USER_ROLE userRole
+        on userRole.USER_ID = users.USER_ID
+        left join TBL_ROLE roles
+        on roles.oid = userRole.ROLE_ID
+        where users.DELETED = 0
+        <if test="admin != null and admin!=''">
+            and users.LOGIN_NAME <![CDATA[<>]]> #{admin}
+        </if>
+    </select>
+
+    <select id="searchAuditor" resultMap="BaseResultMap" parameterType="java.lang.String" databaseId="oracle">
+        select
+            users.USER_ID,
+            users.LOGIN_NAME,
+            users.USER_FULL_NAME,
+            users.STATUS,
+            decode(users.STATUS,'0','启用','禁用') STATUS_NAME,
+            users.SECURITY_LEVEL,
+            decode(users.SECURITY_LEVEL,0,'public',1,'inner',2,'normal-secret',3,'high-secret',4,'top-secret') SECURITY_LEVEL_NAME,
+            userRole.ROLE_ID,
+            roles.ROLE_NAME ROLE_NAME,
+            permission.permission_name
+        from TBL_USER users
+        inner join TBL_USER_ROLE userRole
+        on
+        <if test="admin != null and admin!=''">
+            users.LOGIN_NAME <![CDATA[<>]]> #{admin} AND
+        </if>
+        users.DELETED = 0 and
+        userRole.USER_ID = users.USER_ID
+        inner join TBL_ROLE roles
+        on roles.oid = userRole.ROLE_ID
+        inner join ROLE_PERMISSION rolePermission
+        on  rolePermission.role_Id = roles.oid
+        inner join TBL_PERMISSION permission
+        on permission.oid = rolePermission.permission_id
+        and permission.permission_code =  #{type}
+    </select>
+
+    <select id="searchUser" resultMap="BaseResultMap" databaseId="oracle">
+        select
+            users.USER_ID,
+            users.LOGIN_NAME,
+            users.USER_FULL_NAME,
+            users.STATUS,
+            decode(users.STATUS,'0','启用','禁用') STATUS_NAME,
+            users.SECURITY_LEVEL,
+            decode(users.SECURITY_LEVEL,0,'public',1,'inner',2,'normal-secret',3,'high-secret',4,'top-secret') SECURITY_LEVEL_NAME,
+            userRole.ROLE_ID,
+            roles.ROLE_NAME ROLE_NAME,
+            permission.permission_name
+        from TBL_USER users
+        inner join TBL_USER_ROLE userRole
+        on
+        <if test="admin != null and admin!=''">
+            users.LOGIN_NAME <![CDATA[<>]]> #{admin} AND
+        </if>
+        users.DELETED = 0 and
+        userRole.USER_ID = users.USER_ID
+        inner join TBL_ROLE roles
+        on roles.oid = userRole.ROLE_ID
+        inner join ROLE_PERMISSION rolePermission
+        on  rolePermission.role_Id = roles.oid
+        inner join TBL_PERMISSION permission
+        on permission.oid = rolePermission.permission_id
+    </select>
+
+    <select id="hasPermission" resultMap="BaseResultMap" parameterType="java.util.HashMap" databaseId="oracle">
+		select *
+        from TBL_USER users
+        inner join TBL_USER_ROLE userRole
+        on userRole.USER_ID = users.USER_ID
+        inner join TBL_ROLE roles
+        on roles.oid = userRole.ROLE_ID
+        inner join ROLE_PERMISSION rolePermission
+        on  rolePermission.role_Id = roles.oid
+        inner join TBL_PERMISSION permission
+        on permission.oid = rolePermission.permission_id and permission.PERMISSION_CODE = #{permissionName}
+        where users.USER_ID = #{userId}
+	</select>
+
+</mapper>

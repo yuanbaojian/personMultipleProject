@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atoz.capp.dao.MBDTemplateMapper" >
+  <resultMap id="BaseResultMap" type="com.atoz.capp.model.MBDTemplate" >
+    <id column="OID" property="oid" jdbcType="DECIMAL" />
+    <result column="TEMPLATE_NAME" property="templateName" jdbcType="VARCHAR" />
+    <result column="TEMPLATE_CODE" property="templateCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="DECIMAL" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="CREATED_BY_NAME" property="createdByName" jdbcType="VARCHAR" />
+    <result column="UPDATED_BY_NAME" property="updatedByName" jdbcType="VARCHAR" />
+    <result column="AUDITED_BY" property="auditedBy" jdbcType="DECIMAL" />
+    <result column="AUDIT_TIME" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="AUDITED_BY_NAME" property="auditedByName" jdbcType="VARCHAR" />
+    <result column="SUBMITED_BY_NAME" property="submitedByName" jdbcType="VARCHAR" />
+    <result column="SUBMIT_TIME" property="submitTime" jdbcType="TIMESTAMP" />
+    <result column="OPINION" property="opinion" jdbcType="VARCHAR" />
+    <result column="BELONGCATEGORY" property="belongcategory" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    OID, TEMPLATE_NAME, TEMPLATE_CODE, BELONGCATEGORY, STATUS, CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+    AUDITED_BY, AUDIT_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from TBL_MBD_TEMPLATE
+    where OID = #{oid,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="selectByTemplateName" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(*)
+    from TBL_MBD_TEMPLATE
+    where TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR} 
+  </select>
+  
+  <select id="selectByTemplateCode" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(*)
+    from TBL_MBD_TEMPLATE
+    where TEMPLATE_CODE = #{templateCode,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from TBL_MBD_TEMPLATE
+    where OID = #{oid,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.atoz.capp.model.MBDTemplate" >
+    insert into TBL_MBD_TEMPLATE (OID, TEMPLATE_NAME, TEMPLATE_CODE, 
+      STATUS, BELONGCATEGORY, CREATED_BY, CREATE_TIME, 
+      UPDATED_BY, UPDATE_TIME, AUDITED_BY, AUDIT_TIME)
+    values (#{oid,jdbcType=DECIMAL}, #{templateName,jdbcType=VARCHAR}, #{templateCode,jdbcType=VARCHAR}, 
+      #{belongcategory,jdbcType=DECIMAL},#{status,jdbcType=DECIMAL}, #{createdBy,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=DECIMAL}, #{updateTime,jdbcType=TIMESTAMP},
+      #{auditedBy,jdbcType=DECIMAL}, #{auditTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atoz.capp.model.MBDTemplate" >
+  <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="oid">  
+   		SELECT TBL_MBD_TEMPLATE_Sequence.nextval AS OID FROM DUAL  
+   </selectKey>
+    insert into TBL_MBD_TEMPLATE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        OID,
+      </if>
+      <if test="templateName != null" >
+        TEMPLATE_NAME,
+      </if>
+      <if test="templateCode != null" >
+        TEMPLATE_CODE,
+      </if>
+      <if test="belongcategory != null" >
+        BELONGCATEGORY,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="auditedBy != null" >
+        AUDITED_BY,
+      </if>
+      <if test="auditTime != null" >
+        AUDIT_TIME
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        #{oid,jdbcType=DECIMAL},
+      </if>
+      <if test="templateName != null" >
+        #{templateName,jdbcType=VARCHAR},
+      </if>
+      <if test="templateCode != null" >
+        #{templateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="belongcategory != null" >
+        #{belongcategory,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditedBy != null" >
+        #{auditedBy,jdbcType=DECIMAL},
+      </if>
+      <if test="auditTime != null" >
+        #{auditTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atoz.capp.model.MBDTemplate" >
+    update TBL_MBD_TEMPLATE
+    <set >
+      <if test="templateName != null" >
+        TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR},
+      </if>
+      <if test="templateCode != null" >
+        TEMPLATE_CODE = #{templateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditedBy != null" >
+        AUDITED_BY = #{auditedBy,jdbcType=DECIMAL},
+      </if>
+      <if test="auditTime != null" >
+        AUDIT_TIME = #{auditTime,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+    where OID = #{oid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atoz.capp.model.MBDTemplate" >
+    update TBL_MBD_TEMPLATE
+    set TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR},
+      	TEMPLATE_CODE = #{templateCode,jdbcType=VARCHAR},
+      	STATUS = #{status,jdbcType=DECIMAL},
+      	CREATED_BY = #{createdBy,jdbcType=DECIMAL},
+      	CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      	UPDATED_BY = #{updatedBy,jdbcType=DECIMAL},
+      	UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+       	AUDITED_BY = #{auditedBy,jdbcType=DECIMAL},
+      	AUDIT_TIME = #{auditTime,jdbcType=TIMESTAMP}
+   	 where OID = #{oid,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="getAll" resultMap="BaseResultMap"  parameterType="java.lang.Long">
+	    select mt.OID,
+	       mt.TEMPLATE_NAME, 
+	       mt.TEMPLATE_CODE, 
+	       mt.BELONGCATEGORY,
+	       mt.STATUS,
+	       decode(mt.STATUS ,'0','未发布','2','已发布','1','待审核','3','已驳回') STATUS_NAME,
+	       u1.USER_FULL_NAME  as CREATED_BY_NAME, 
+	       u2.USER_FULL_NAME  as UPDATED_BY_NAME, 
+	       mt.CREATE_TIME, 
+	       mt.UPDATE_TIME, 
+           mt.AUDITED_BY,
+           mt.AUDIT_TIME,
+           u3.USER_FULL_NAME as AUDITED_BY_NAME,
+    	   u4.USER_FULL_NAME as SUBMITED_BY_NAME,
+    	   h.OPINION as OPINION
+	  from TBL_MBD_TEMPLATE mt
+	  LEFT JOIN  TBL_USER u1 on u1.USER_ID=  mt.CREATED_BY
+	  LEFT JOIN  TBL_USER u2 on u2.USER_ID=  mt.UPDATED_BY
+	  left join TBL_USER u3 on u3.USER_ID= mt.AUDITED_BY
+      left join (select h1.*
+  					from (select ROW_NUMBER() over(PARTITION BY MBD_OID ORDER BY MBD_OID,RELEASE_TIME DESC) rn,a1.*
+          					from TBL_MBD_HISTORY a1
+         				  where ACTION = '否决') h1
+         			where h1.rn=1) h on h.MBD_OID = mt.OID
+     left join TBL_USER u4 on u4.USER_ID= h.RELEASED_BY
+     where mt.BELONGCATEGORY = #{categoryId,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="getAllReleased" resultMap="BaseResultMap">
+	    select mt.OID,
+	       mt.TEMPLATE_NAME, 
+	       mt.TEMPLATE_CODE, 
+	       mt.BELONGCATEGORY,
+	       mt.STATUS,
+	       decode(mt.STATUS ,'0','未发布','2','已发布','1','待审核','3','已驳回') STATUS_NAME,
+	       u1.USER_FULL_NAME  as CREATED_BY_NAME, 
+	       u2.USER_FULL_NAME  as UPDATED_BY_NAME, 
+	       mt.CREATE_TIME, 
+	       mt.UPDATE_TIME, 
+           mt.AUDITED_BY,
+           mt.AUDIT_TIME,
+           u3.USER_FULL_NAME as AUDITED_BY_NAME,
+    	   u4.USER_FULL_NAME as SUBMITED_BY_NAME,
+    	   h.OPINION as OPINION
+	  from TBL_MBD_TEMPLATE mt 
+	  LEFT JOIN  TBL_USER u1 on u1.USER_ID=  mt.CREATED_BY
+	  LEFT JOIN  TBL_USER u2 on u2.USER_ID=  mt.UPDATED_BY
+	  left join TBL_USER u3 on u3.USER_ID= mt.AUDITED_BY
+      left join (select h1.*
+  					from (select ROW_NUMBER() over(PARTITION BY MBD_OID ORDER BY MBD_OID,RELEASE_TIME DESC) rn,a1.*
+          					from TBL_MBD_HISTORY a1
+         				  where ACTION = '否决') h1
+         			where h1.rn=1) h on h.MBD_OID = mt.OID
+     left join TBL_USER u4 on u4.USER_ID= h.RELEASED_BY
+     where mt.STATUS = 2 and mt.BELONGCATEGORY = #{categoryId,jdbcType=DECIMAL}
+  </select>
+  
+   <select id="getUnAuditMBD" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+       select 
+    	   mt.OID,
+    	   mt.TEMPLATE_NAME, 
+	       mt.TEMPLATE_CODE, 
+	       mt.BELONGCATEGORY,
+	       mt.STATUS,
+	       decode(mt.STATUS ,'0','未发布','2','已发布','1','待审核','3','已驳回') STATUS_NAME,
+	       u1.USER_FULL_NAME  as CREATED_BY_NAME, 
+	       u2.USER_FULL_NAME  as UPDATED_BY_NAME, 
+	       mt.CREATE_TIME, 
+	       mt.UPDATE_TIME, 
+           mt.AUDITED_BY,
+           mt.AUDIT_TIME,
+    	   u3.USER_FULL_NAME as AUDITED_BY_NAME,
+    	   u4.USER_FULL_NAME as SUBMITED_BY_NAME,
+    	   h.RELEASE_TIME as SUBMIT_TIME
+      from TBL_MBD_TEMPLATE mt
+    	   left join TBL_USER u1 on u1.USER_ID= mt.CREATED_BY
+    	   left join TBL_USER u2 on u2.USER_ID= mt.UPDATED_BY
+    	   left join TBL_USER u3 on u3.USER_ID= mt.AUDITED_BY
+    	   left join (select h1.*
+  					from (select ROW_NUMBER() over(PARTITION BY MBD_OID ORDER BY MBD_OID,RELEASE_TIME DESC) rn,a1.*
+          					from TBL_MBD_HISTORY a1
+         				  where ACTION = '提交') h1
+         			where h1.rn=1) h on h.MBD_OID = mt.OID
+    	   left join TBL_USER u4 on u4.USER_ID= h.RELEASED_BY
+       where mt.AUDITED_BY = #{userId,jdbcType=DECIMAL} and mt.STATUS = 1
+   
+  </select>
+  
+   <select id="hasMBDTemplate" resultType="long" parameterType="java.lang.Long" >
+    select 
+    count(*)
+    from TBL_MBD_TEMPLATE
+    where BELONGCATEGORY = #{nodeId,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="checkTemplateNameUpdate" resultType="java.lang.Integer" parameterType="com.atoz.capp.model.MBDTemplate">
+    select count(*)
+    from TBL_MBD_TEMPLATE
+    where TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR}
+    <if test="oid != null" >
+        and OID != #{oid,jdbcType=DECIMAL}
+    </if> 
+  </select>
+  
+  <select id="checkTemplateCodeUpdate" resultType="java.lang.Integer" parameterType="com.atoz.capp.model.MBDTemplate">
+    select count(*)
+    from TBL_MBD_TEMPLATE
+    where TEMPLATE_CODE = #{templateCode,jdbcType=VARCHAR} 
+    <if test="oid != null" >
+        and OID != #{oid,jdbcType=DECIMAL}
+    </if>
+  </select>
+</mapper>
