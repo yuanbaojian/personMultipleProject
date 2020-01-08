@@ -44,7 +44,8 @@
         </if>
     </select>
 
-    <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.Map" databaseId="mysql">
+    <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.Map"  databaseId="oracle"
+    >
         select
             users.USER_ID,
             users.LOGIN_NAME,

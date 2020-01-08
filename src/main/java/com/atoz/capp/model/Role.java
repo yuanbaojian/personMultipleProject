@@ -3,6 +3,7 @@ package com.atoz.capp.model;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @KeySequence("SEQ_ROLE")
 @TableName("TBL_ROLE")
-public class Role {
+public class Role implements Serializable {
     /** 角色ID */
     @TableId(value = "OID", type = IdType.AUTO)
     private Long oid;

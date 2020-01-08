@@ -18,21 +18,4 @@ spring:
     password : xgnwkzstqovkeceb
 
 mybatis-plus:
-  # config-location:
-  # classpath:/mapper/*Mapper.xml
-  # 实体扫描，多个package用逗号或者分号分隔
   type-aliases-package: com.atoz.capp.model
-  configuration:
-    # 驼峰下划线转换
-    map-underscore-to-camel-case: true
-    cache-enabled: false
-    call-setters-on-nulls: true
-  global-config:
-    # 刷新mapper 调试神器
-    refresh: true
-    banner: false
-    #数据库大写下划线转换
-    #capital-mode: true
-    #序列接口实现类配置
-    #key-generator: com.baomidou.springboot.xxx
-    # 数据库相关配置

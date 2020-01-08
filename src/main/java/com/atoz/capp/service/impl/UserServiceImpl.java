@@ -144,15 +144,14 @@ public class UserServiceImpl implements UserServiceI {
 	 */
 	@Override
 	public List<User> getAll() {
-//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("DELETED",0);
-//        queryWrapper.ne("LOGIN_NAME", ConfigConstants.ADMIN_USER);
-//        return userMapper.selectList(queryWrapper);
-		// 参数Map
+         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		List<User> users = userMapper.selectList(null);
+//		// 参数Map
 		Map<String,Object> map = new HashMap<>();
-		// 管理员名
+//		// 管理员名
 		map.put("admin", "admin");
 		return userMapper.getAll(map);
+//		return users;
 	}
 
 	/**

@@ -3,11 +3,14 @@ package com.atoz.capp.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.atoz.capp.common.constant.ConfigConstants;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,6 +53,7 @@ public class RoleController {
 	 */
 	@PostMapping(value = "/roles", params = "json")
 	public void getRoles(HttpServletResponse response) throws IOException {
+		QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
 		List<Role> l = roleService.getAll();
 		response.setContentType(ConfigConstants.CONTENT_TYPE);
 		response.setCharacterEncoding(ConfigConstants.CHARACTER_ENCODING);
