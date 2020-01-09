@@ -1,5 +1,7 @@
 server:
   port: 8082
+  servlet:
+    context-path: /3DMPMSystem
 spring:
   datasource:
     name: tooling
@@ -19,3 +21,4 @@ spring:
 
 mybatis-plus:
   type-aliases-package: com.atoz.capp.model
+  mapper-locations: classpath:mapping/*.xml
