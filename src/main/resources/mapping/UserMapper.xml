@@ -32,7 +32,7 @@
 		UPDATED_BY, UPDATE_TIME, FAIL_COUNT,LAST_LOGIN_TIME,SECURITY_LEVEL,DELETED
     </sql>
 
-    <select id="checkUser" resultMap="BaseResultMap" parameterType="com.atoz.capp.model.User" databaseId="oracle">
+    <select id="checkUser" resultMap="BaseResultMap" parameterType="com.atoz.capp.model.User">
         select
         <include refid="Base_Column_List" />
         from TBL_USER where DELETED = 0
@@ -44,8 +44,7 @@
         </if>
     </select>
 
-    <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.Map"  databaseId="oracle"
-    >
+    <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
         select
             users.USER_ID,
             users.LOGIN_NAME,
@@ -105,7 +104,7 @@
         and permission.permission_code =  #{type}
     </select>
 
-    <select id="searchUser" resultMap="BaseResultMap" databaseId="oracle">
+    <select id="searchUser" resultMap="BaseResultMap">
         select
             users.USER_ID,
             users.LOGIN_NAME,
@@ -133,7 +132,7 @@
         on permission.oid = rolePermission.permission_id
     </select>
 
-    <select id="hasPermission" resultMap="BaseResultMap" parameterType="java.util.HashMap" databaseId="oracle">
+    <select id="hasPermission" resultMap="BaseResultMap" parameterType="java.util.HashMap">
 		select *
         from TBL_USER users
         inner join TBL_USER_ROLE userRole
