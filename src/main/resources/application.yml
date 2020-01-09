@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     name: tooling
-    url: jdbc:oracle:thin:@192.168.6.43:1521/tooling
+    url: jdbc:oracle:thin:@192.168.6.43:1521:tooling
     username: mbduser
     password: mbduser
     driver-class-name: oracle.jdbc.driver.OracleDriver
@@ -13,8 +13,41 @@ spring:
   servlet:
     multipart:
       max-file-size:100mb
+  profiles:
+    active: test
 
 
 mybatis-plus:
   type-aliases-package: com.atoz.capp.model
-  mapper-locations: classpath:mapping/*.xml
+  mapper-locations: classpath:com/atoz/capp/mapping/*.xml
+
+
+---
+#development environment
+spring:
+  profiles: dev
+
+server:
+  port: 8080
+
+my:
+  name: ricky
+
+---
+#test environment
+spring:
+  profiles: test
+
+server:
+  port: 8081
+
+
+---
+#production environment
+spring:
+  profiles: prod
+
+server:
+  port: 8082
+
+
