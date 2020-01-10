@@ -32,7 +32,6 @@
         <ant.version>1.10.5</ant.version>
         <jackson.version>2.9.4</jackson.version>
         <freemarker.version>2.3.28</freemarker.version>
-        <slf4j.version>1.7.29</slf4j.version>
         <poi.version>4.1.0</poi.version>
         <ezmorph.version>1.0.6</ezmorph.version>
         <shiro.version>1.4.2</shiro.version>
@@ -201,45 +200,10 @@
             <version>${freemarker.version}</version>
         </dependency>
 
-        <!-- 一般创建工程，建议通过slf4j设计日志系统，方便扩展 -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
 
-<!--        &lt;!&ndash; start logkack由log4j创始人设计的一个开源日志组件 要与SLF4J结合起来 start&ndash;&gt;-->
-<!--        &lt;!&ndash; 提供了LogBack的核心功能，是另外两个组件的基础 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>ch.qos.logback</groupId>-->
-<!--            <artifactId>logback-core</artifactId>-->
-<!--            <version>${logback.version}</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; 实现了Slf4j的API，所以当想配合Slf4j使用时，需要引入logback-classic &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>ch.qos.logback</groupId>-->
-<!--            <artifactId>logback-classic</artifactId>-->
-<!--            <version>${logback.version}</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; 为了集成Servlet环境而准备的，可提供HTTP-access的日志接口 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>ch.qos.logback</groupId>-->
-<!--            <artifactId>logback-access</artifactId>-->
-<!--            <version>${logback.version}</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; end logback end &ndash;&gt;-->
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.13.0</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.13.0</version>
-        </dependency>
+
+
 
         <!-- jedis Redis官方推荐的Java连接开发工具 -->
         <dependency>
@@ -384,6 +348,25 @@
             <version>0.9.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+
 
 
         <dependency>
@@ -409,15 +392,12 @@
             </exclusions>
         </dependency>
 
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

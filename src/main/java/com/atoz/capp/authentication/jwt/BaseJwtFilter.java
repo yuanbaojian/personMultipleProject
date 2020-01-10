@@ -4,6 +4,7 @@ import com.atoz.capp.common.constant.ConfigConstants;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -11,13 +12,14 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @Author yabo.wang
  * @Date 2020/1/8 13:12
  * @Descripyion:
  */
-@Log4j2
 public class BaseJwtFilter extends BasicHttpAuthenticationFilter {
     private static String LOGIN_SIGN = "Authorization";
 
@@ -28,12 +30,12 @@ public class BaseJwtFilter extends BasicHttpAuthenticationFilter {
                 executeLogin(request, response);
             } catch (Exception e) {
                 System.out.println("登录权限不足！");
+                return false;
             }
         }
-
         return true;
     }
-    /***
+    /***   登录失败怎么近???
      * @param request
      * @param response
      * @Description:重写该方法避免循环调用doGetAuthenticationInfo方法
@@ -55,10 +57,7 @@ public class BaseJwtFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
-        HttpServletRequest req = (HttpServletRequest) request;
-
         String authorization = getAuthzHeader(request);
-
         return authorization != null;
     }
 
@@ -96,21 +95,22 @@ public class BaseJwtFilter extends BasicHttpAuthenticationFilter {
         httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
-        String requestUri = httpServletRequest.getRequestURI();
-        String contextPath = httpServletRequest.getContextPath();
-        String url = requestUri.substring(contextPath.length());
-//        if(ConfigConstants.REQUEST_LOGIN.equals(url)){
-//            //当前为登录请求
-//            System.out.println("当前请求为登录请求！");
-//        }else{
-//            System.out.println("其他类型的请求！");
-//            return true;
-//        }
-        // 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
-        if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
-            httpServletResponse.setStatus(HttpStatus.OK.value());
-            return false;
-        }
         return super.preHandle(request, response);
+    }
+
+    @Override
+    protected boolean sendChallenge(ServletRequest request, ServletResponse response) {
+        HttpServletResponse httpResponse = WebUtils.toHttp(response);
+        httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        httpResponse.setCharacterEncoding("utf-8");
+        httpResponse.setContentType("application/json; charset=utf-8");
+        final String message = "未认证，请在系统进行认证";
+        try (PrintWriter out = httpResponse.getWriter()) {
+            String responseJson = "{\"message\":\"" + message + "\"}";
+            out.print(responseJson);
+        } catch (IOException e) {
+
+        }
+        return false;
     }
 }
