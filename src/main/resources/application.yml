@@ -11,7 +11,7 @@ spring:
   redis:
     host: yuanbaojian.xyz
     port: 6379
-    password: root
+    password: 312ybj
     jedis:
       pool:
         min-idle: 8
