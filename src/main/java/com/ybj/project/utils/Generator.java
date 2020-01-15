@@ -94,11 +94,11 @@ public class Generator {
     private PackageConfig getPackageConfig(String packageName) {
         return new PackageConfig()
                 .setParent(packageName)
-                .setXml("mapping")
-                .setMapper("dao")
-                .setController("controller")
-                .setService("service")
-                .setEntity("model");
+//                .setXml("mapping")
+//                .setMapper("dao")
+//                .setController("controller")
+                .setService("service");
+//                .setEntity("model");
     }
 
     /**
