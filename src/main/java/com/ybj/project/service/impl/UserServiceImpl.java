@@ -1,7 +1,7 @@
 package com.ybj.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ybj.project.mapper.UserMapper;
+import com.ybj.project.dao.UserMapper;
 import com.ybj.project.model.User;
 import com.ybj.project.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

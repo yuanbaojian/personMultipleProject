@@ -1,6 +1,6 @@
 package com.ybj.project.service.impl;
 
-import com.ybj.project.mapper.MenuMapper;
+import com.ybj.project.dao.MenuMapper;
 import com.ybj.project.model.Menu;
 import com.ybj.project.service.MenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

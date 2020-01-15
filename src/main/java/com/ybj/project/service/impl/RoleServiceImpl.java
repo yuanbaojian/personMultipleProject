@@ -2,7 +2,7 @@ package com.ybj.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ybj.project.Exception.RainbowException;
-import com.ybj.project.mapper.RoleMapper;
+import com.ybj.project.dao.RoleMapper;
 import com.ybj.project.model.Role;
 import com.ybj.project.service.RoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

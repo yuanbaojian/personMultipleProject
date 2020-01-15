@@ -1,6 +1,6 @@
 package com.ybj.project.service.impl;
 
-import com.ybj.project.mapper.LoginLogMapper;
+import com.ybj.project.dao.LoginLogMapper;
 import com.ybj.project.model.LoginLog;
 import com.ybj.project.service.LoginLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,6 +1,6 @@
 package com.ybj.project.service.impl;
 
-import com.ybj.project.mapper.UserRoleMapper;
+import com.ybj.project.dao.UserRoleMapper;
 import com.ybj.project.model.UserRole;
 import com.ybj.project.service.UserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

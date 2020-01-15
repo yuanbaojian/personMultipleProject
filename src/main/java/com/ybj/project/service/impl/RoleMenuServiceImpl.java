@@ -1,6 +1,6 @@
 package com.ybj.project.service.impl;
 
-import com.ybj.project.mapper.RoleMenuMapper;
+import com.ybj.project.dao.RoleMenuMapper;
 import com.ybj.project.model.RoleMenu;
 import com.ybj.project.service.RoleMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
