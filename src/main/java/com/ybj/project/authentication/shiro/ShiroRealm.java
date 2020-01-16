@@ -66,12 +66,12 @@ public class ShiroRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         try {
             // 1 得到用户所属角色集合
-            List<Role> roleList =  this.roleService.selectRoleListByUsername(username);
+            List<Role> roleList =  roleService.selectRoleListByUsername(username);
             for (Role role: roleList) {
                 simpleAuthorizationInfo.addRole(role.getName());
             }
             // 2 得到用户所属菜单集合
-            List<Menu> menuList = this.menuService.selectMenuListByUsername(username);
+            List<Menu> menuList = menuService.selectMenuListByUsername(username);
             for (Menu menu: menuList) {
                 simpleAuthorizationInfo.addStringPermission(menu.getPermission());
             }
@@ -113,7 +113,7 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException("token校验不通过!");
         }
         // 得到当前用户
-        User user = this.userService.selectUserByUsername(username);
+        User user = userService.selectUserByUsername(username);
         if(null == user){
             throw new AuthenticationException("用户名或密码错误!");
         }
