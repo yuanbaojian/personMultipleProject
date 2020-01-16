@@ -1,8 +1,12 @@
 package com.ybj.project.redis.service;
 
+import com.ybj.project.Exception.RedisConnectException;
+
 import java.util.Map;
 import java.util.Set;
 
+
+//各种redis的服务
 public interface RedisService {
 
     Map<String ,Object> getKeysSize();
@@ -11,13 +15,13 @@ public interface RedisService {
 
     Set<String> getKeys(String pattern);
 
-    String get(String key);
+    String get(String key) throws RedisConnectException;
 
-    String set(String key, String value);
+    String set(String key, String value) throws RedisConnectException;
 
     String set(String key, String value, Long millisecond);
 
-    String del(String... key);
+    Long del(String... key) throws RedisConnectException;
 
     Boolean exists(String key);
 
