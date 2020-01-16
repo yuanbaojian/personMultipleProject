@@ -2,6 +2,9 @@ package com.ybj.project.dao;
 
 import com.ybj.project.model.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface RoleMapper extends BaseMapper<Role> {
 
+    List<Role> selectRoleListByUsername(@Param("username") String username);
 }

@@ -26,7 +26,7 @@ public class JWTUtil {
      * @author melo、lh
      * @createTime 2019-10-21 13:41:13
      */
-    public static  String sign(String username,String secret){
+    public static  String getToken(String username, String secret){
         try{
         // 过期时间
         Date date = new Date(System.currentTimeMillis() + RainbowConstant.EXPIRE_TIME);

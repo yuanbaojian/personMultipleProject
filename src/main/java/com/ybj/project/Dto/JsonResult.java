@@ -1,7 +1,8 @@
-package com.ybj.project.authentication.Dto;
+package com.ybj.project.Dto;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 状态相应类
@@ -25,10 +26,23 @@ public class JsonResult extends HashMap<String, Object> {
         return jsonResult;
     }
 
+    public static JsonResult ok(String message){
+        JsonResult jsonResult=new JsonResult();
+        jsonResult.put(SUCCESS,true);
+        jsonResult.put(MESSAGE, message);
+        return jsonResult;
+    }
+
     public static JsonResult fail(String s) {
         JsonResult jsonResult=new JsonResult();
         jsonResult.put(SUCCESS,false);
         jsonResult.put(MESSAGE,s);
         return jsonResult;
+    }
+
+    //当前的jsonresult 增加一下额外数据
+    public JsonResult addData(Map<String, Object> data) {
+        this.put(DATA, data);
+        return this;
     }
 }
