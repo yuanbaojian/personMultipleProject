@@ -78,6 +78,7 @@ public class ShiroRealm extends AuthorizingRealm {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        // 3.返回授权器
         return simpleAuthorizationInfo;
     }
 
@@ -94,13 +95,13 @@ public class ShiroRealm extends AuthorizingRealm {
         String token = (String) authenticationToken.getCredentials();
         // 1- 从缓存中获得登录时存入的token
         String redisToken = null;
-        // 从 redis里获取这个 token
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         String ip = IPUtil.getIpAddr(request);
         try {
             // key  为 系统参数 + token
             String key = RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip;
-            redisToken = this.redisService.get(key);
+            // 从 redis里获取 token
+            redisToken = redisService.get(key);
         }catch (Exception e){
              e.printStackTrace();
         }
