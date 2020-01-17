@@ -13,6 +13,7 @@ public class RainbowProperties {
 
     private String anonURL;
 
+    //可读性太差
     private Long jwtTimeOut=86400L;
 
 }

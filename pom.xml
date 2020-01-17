@@ -202,7 +202,11 @@
 
 
 
-
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 
 
         <!-- jedis Redis官方推荐的Java连接开发工具 -->

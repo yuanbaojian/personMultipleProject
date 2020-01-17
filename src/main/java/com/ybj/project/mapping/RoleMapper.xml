@@ -21,4 +21,15 @@
         ID, NAME, STATUS, CREATOR, CREATOR_NAME, CREATE_TIME, UPDATOR, UPDATOR_NAME, UPDATE_TIME, REMARK
     </sql>
 
+
+    <select id="selectRoleListByUsername" resultMap="BaseResultMap">
+  SELECT
+     	SR.*
+        FROM
+            sys_user SU
+        JOIN sys_user_role SUR ON SU.ID = SUR.USER_ID
+        JOIN sys_role SR ON SUR.ROLE_ID = SR.ID
+        WHERE USERNAME = #{username} and SR.status = '0'
+    </select>
+
 </mapper>

@@ -26,7 +26,7 @@ spring:
 
 mybatis-plus:
   type-aliases-package: com.ybj.project.model
-  mapper-locations: classpath:com/atoz/capp/mapping/*.xml
+  mapper-locations: classpath:com/ybj/project/mapping/*.xml
 
 
 ---
