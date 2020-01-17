@@ -46,7 +46,7 @@
         <commonstext.version>1.8</commonstext.version>
         <fileupload.version>1.4</fileupload.version>
         <collections.version>3.2.2</collections.version>
-        <servletapi.version>3.0-alpha-1</servletapi.version>
+        <servletapi.version>3.1.0</servletapi.version>
         <ehcache.version>2.4.5</ehcache.version>
         <jwt.version>3.8.3</jwt.version>
     </properties>
@@ -175,8 +175,8 @@
         <!-- servlet-api -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${servletapi.version}</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -418,6 +418,13 @@
             <version>7.0.0</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

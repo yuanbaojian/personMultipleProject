@@ -2,6 +2,7 @@ package com.ybj.project.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.ybj.project.Dto.JsonResult;
+import com.ybj.project.Exception.RedisConnectException;
 import com.ybj.project.authentication.jwt.JWTToken;
 import com.ybj.project.authentication.jwt.JWTUtil;
 import com.ybj.project.constant.RainbowConstant;
@@ -12,6 +13,9 @@ import com.ybj.project.service.LoginLogService;
 import com.ybj.project.service.UserService;
 import com.ybj.project.utils.IPUtil;
 import com.ybj.project.utils.MD5Utils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class LoginController {
 
@@ -39,6 +44,12 @@ public class LoginController {
 
     @PostMapping("/login")
     public JsonResult login(User user, HttpServletRequest request){
+        String[] anonUrl = StringUtils.splitByWholeSeparatorPreserveAllTokens(rainbowProperties.getAnonURL(), StringPool.COMMA);
+
+        // TODO 这个应该在前台处理， 现在是为了postman测试
+        if (StringUtils.isBlank(user.getUsername()) || StringUtils.isBlank(user.getPassword())) {
+            return JsonResult.fail("用户名和密码不能为空!" + rainbowProperties.getEn());
+        }
         JsonResult jsonResult=JsonResult.ok();
         String encryptedPassword= MD5Utils.encrypt(user.getUsername(), user.getPassword());
         User loginUser = userService.selectUserByUsername(user.getUsername());
@@ -85,6 +96,21 @@ public class LoginController {
         *  value: token
         * */
         redisService.set(RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip,token,rainbowProperties.getJwtTimeOut()*1000);
+    }
+
+    @PostMapping("/logout")
+    public JsonResult logout(HttpServletRequest request){
+        String ip=IPUtil.getIpAddr(request);
+        //这个应该是后台的token
+        String token = (String) SecurityUtils.getSubject().getPrincipal();
+        String tokenKey = StringPool.PLUS + RainbowConstant.RAINBOW_TOKEN + token + StringPool.DOT + ip;
+        try {
+            redisService.del(tokenKey);
+        } catch (RedisConnectException e) {
+            e.printStackTrace();
+            log.error("注销时，token删除失败");
+        }
+        return JsonResult.ok();
     }
 
 

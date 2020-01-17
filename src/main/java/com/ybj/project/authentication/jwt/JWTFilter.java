@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,12 +20,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 利用JWT实现自定义shiro的过滤器 
+ * 利用JWT实现自定义shiro的过滤器
  * @author melo、lh
  * @createTime 2019-10-21 13:49:05
  */
 @Slf4j
 public class JWTFilter extends BasicHttpAuthenticationFilter {
+
+    @Autowired
+    RainbowProperties rainbowProperties;
 
     /**请求头授权标示*/
     private final static String AUTHORIZATION ="Authorization";
@@ -42,7 +46,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
          HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader(AUTHORIZATION);
-        return StringUtils.isNotBlank(authorization);
+        //return StringUtils.isNotBlank(authorization);
+        return true;
     }
     /**
      * 是否允许访问 false 请求被拦截  (如果在这里返回了false，请求会被直接拦截，用户看不到任何东西

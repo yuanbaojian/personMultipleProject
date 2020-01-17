@@ -19,7 +19,7 @@ public interface RedisService {
 
     String set(String key, String value) throws RedisConnectException;
 
-    String set(String key, String value, Long millisecond);
+    String set(String key, String value, Long millisecond) throws RedisConnectException;
 
     Long del(String... key) throws RedisConnectException;
 
@@ -27,7 +27,7 @@ public interface RedisService {
 
     Long pttl(String key);
 
-    Long pexpire(String  key, Long milliseconds);
+    Long pexpire(String  key, Long milliseconds) throws RedisConnectException;
 
 
 

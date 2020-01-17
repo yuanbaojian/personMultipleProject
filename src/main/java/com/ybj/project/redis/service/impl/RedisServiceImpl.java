@@ -60,8 +60,10 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public String set(String key, String value, Long millisecond) {
-        return null;
+    public String set(String key, String value, Long millisecond) throws RedisConnectException {
+        String result=set(key,value);
+        pexpire(key,millisecond);
+        return result;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public Long pexpire(String key, Long milliseconds) {
-        return null;
+    public Long pexpire(String key, Long milliseconds) throws RedisConnectException {
+        return excuteByJedis(j -> j.pexpire(key, milliseconds));
     }
 }
