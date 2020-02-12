@@ -1,7 +1,0 @@
-#test environment
-spring:
-  profiles: test
-
-server:
-  port: 8086
-

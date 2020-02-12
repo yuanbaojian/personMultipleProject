@@ -1,7 +1,0 @@
-#development environment
-spring:
-  profiles: dev
-
-server:
-  port: 8088
-

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>parentPom</artifactId>
+        <groupId>com.ybj</groupId>
+        <version>1.0</version>
+    </parent>
+
+    <packaging>war</packaging>
+    <artifactId>mpmsystem-system-authentication</artifactId>
+    <version>1.0</version>
+    <name>mpmsystem-system-authentication</name>
+    <description>mpmsystem-system-authentication</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <jwt.version>3.8.3</jwt.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ojdbc</groupId>
+            <artifactId>ojdbc</artifactId>
+            <version>14</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/ojdbc8.jar</systemPath>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
+
+<!--        引入依赖的模块 -->
+        <dependency>
+            <groupId>com.ybj.mpm.utils</groupId>
+            <artifactId>mpmsystem-utils</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ybj.cbt</groupId>
+            <artifactId>system-clawer</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+<!--        elasticSearch的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.searchbox</groupId>
+            <artifactId>jest</artifactId>
+            <version>5.3.3</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+<!--                <configuration>-->
+<!--                    <mainClass>com.ybj.mpm.system.authentication.MpmsystemSystemAuthenticationApplication</mainClass>-->
+<!--                    <mainClass>com.ybj.mpm.system.project.MpmsystemProjectApplication</mainClass>-->
+<!--                    <mainClass>com.ybj.mpm.core.version.MpmsystemCoreVersionApplication</mainClass>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-war-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <overlays>-->
+<!--                        <overlay>-->
+<!--                            &lt;!&ndash;主要修改此处&ndash;&gt;-->
+<!--                            <groupId>com.ybj.mpm.project</groupId>-->
+<!--                            <artifactId>mpmsystem-project</artifactId>-->
+<!--                        </overlay>-->
+<!--                        <overlay>-->
+<!--                            &lt;!&ndash;主要修改此处&ndash;&gt;-->
+<!--                            <groupId>com.ybj.mpm.core.version</groupId>-->
+<!--                            <artifactId>mpmsystem-core-version</artifactId>-->
+<!--                        </overlay>-->
+<!--                        &lt;!&ndash;                        <overlay>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                            &lt;!&ndash;主要修改此处&ndash;&gt;&ndash;&gt;-->
+<!--                        &lt;!&ndash;                            <groupId>com.ybj.mpm.core.bom</groupId>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                            <artifactId>mpmsystem-core-bom</artifactId>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                        </overlay>&ndash;&gt;-->
+<!--                    </overlays>-->
+<!--                    <webResources>-->
+<!--                        <resource>-->
+<!--                            <directory>${project.basedir}/lib</directory>-->
+<!--                            <targetPath>WEB-INF/lib</targetPath>-->
+<!--                            <includes>-->
+<!--                                <include>**/*.jar</include>-->
+<!--                            </includes>-->
+<!--                        </resource>-->
+<!--                    </webResources>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <skipTests>true</skipTests>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+        </plugins>
+        <finalName>helloWorld</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/mapping/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+</project>

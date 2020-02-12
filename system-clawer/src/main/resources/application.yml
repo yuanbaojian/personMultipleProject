@@ -1,0 +1,10 @@
+mybatis-plus:
+  mapper-locations: classpath:com/ybj/cbt/mapping/*.xml
+  type-aliases-package: com.ybj.cbt.model
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  page-size-zero: true
+  params: count=countSql

@@ -1,0 +1,34 @@
+server:
+  servlet:
+    context-path: /mpmsystem
+  port: 8085
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+  profiles:
+    active: ybj
+  redis:
+    host: yuanbaojian.xyz
+    port: 6379
+    password: 312ybj
+    jedis:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 0
+
+  main:
+    allow-bean-definition-overriding: true
+
+#配置 elasticSearch的 url（已过失，过会再改）
+  elasticsearch:
+    jest:
+      uris: http://127.0.0.1:9200
+
+
+mybatis-plus:
+  mapper-locations: classpath:com/ybj/mpm/system/authentication/mapping/*.xml
+  type-aliases-package: com.atoz.mpm.system.authentication.model
+
