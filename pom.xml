@@ -40,7 +40,7 @@
         <quartz.version>2.3.2</quartz.version>
         <itextpdf.version>5.5.6</itextpdf.version>
         <ant.version>1.10.5</ant.version>
-        <jackson.version>2.9.4</jackson.version>
+        <jackson.version>2.10.2</jackson.version>
         <freemarker.version>2.3.28</freemarker.version>
         <poi.version>4.1.0</poi.version>
         <ezmorph.version>1.0.6</ezmorph.version>
